@@ -67,25 +67,17 @@ var bodyContent = {
 			</tr>
 						<tr>
 				<td>评估状态</td>
-				<td>${model.evaluate}</td>
+				<td>
+					<select name="model.evaluate" class="form-control" valid="vselect" validname="目录" readonly>
+					<option value="-1">--评估状态--</option>
+					${selectEvaluate }
+					</select>
+				</td>
 			</tr>
-						<tr>
-				<td>排序</td>
-				<td>${model.sort}</td>
-			</tr>
-						<tr>
-				<td>更新时间</td>
-				<td>${model.update_time}</td>
-			</tr>
-						<tr>
-				<td>创建时间</td>
+			<tr>
+				<td>申请时间</td>
 				<td>${model.create_time}</td>
 			</tr>
-						<tr>
-				<td>创建者</td>
-				<td>${model.create_id}</td>
-			</tr>
-		
 		<tr>
 			<td colspan="2" align="center">
 			<button class="btn btn-default" onclick="closeIframe();return false;">关 闭</button>
