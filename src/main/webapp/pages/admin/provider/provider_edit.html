@@ -1,0 +1,147 @@
+<% 
+var headContent = {
+	include("/pages/template/head.html"){}
+%>
+<script type="text/javascript">
+	var oper ;
+	jQuery(function($) {
+		oper = new flyfox("provider", "服务商信息");
+	});
+</script>
+
+<%
+};
+var bodyContent = {
+%>
+<form name="form1" action="" method="post" class="form-horizontal"
+		role="form" onsubmit="oper.save(${model.id});">
+	<input type="hidden" name="model.id" value="${model.id}" />
+	<table class="table">
+		<%  // 列表头部%>
+				<tr>
+					<td>联系人姓名</td>
+					<td>
+					<input class="form-control" type="text" name="model.name" value="${model.name }"  />
+											</td>
+				</tr>
+				<tr>
+					<td>联系人电话</td>
+					<td>
+					<input class="form-control" type="text" name="model.telephone" value="${model.telephone }"  />
+											</td>
+				</tr>
+				<tr>
+					<td>服务类型</td>
+					<td>
+					<input class="form-control" type="text" name="model.service" value="${model.service }"  />
+											</td>
+				</tr>
+				<tr>
+					<td>子项</td>
+					<td>
+					<input class="form-control" type="text" name="model.sub" value="${model.sub }"  />
+											</td>
+				</tr>
+				<tr>
+					<td>公司名称</td>
+					<td>
+					<input class="form-control" type="text" name="model.company" value="${model.company }"  />
+											</td>
+				</tr>
+				<tr>
+					<td>企业性质</td>
+					<td>
+					<input class="form-control" type="text" name="model.nature" value="${model.nature }"  />
+											</td>
+				</tr>
+				<tr>
+					<td>企业规模</td>
+					<td>
+					<input class="form-control" type="text" name="model.scope" value="${model.scope }"  />
+											</td>
+				</tr>
+				<tr>
+					<td>企业分类</td>
+					<td>
+					<input class="form-control" type="text" name="model.classtype" value="${model.classtype }"  />
+											</td>
+				</tr>
+				<tr>
+					<td>企业标签</td>
+					<td>
+					<input class="form-control" type="text" name="model.label" value="${model.label }"  />
+											</td>
+				</tr>
+				<tr>
+					<td>注册资金</td>
+					<td>
+					<input class="form-control" type="text" name="model.capital" value="${model.capital }"  />
+											</td>
+				</tr>
+				<tr>
+					<td>企业logo</td>
+					<td>
+					<input class="form-control" type="text" name="model.logo" value="${model.logo }"  />
+											</td>
+				</tr>
+				<tr>
+					<td>营业执照</td>
+					<td>
+					<input class="form-control" type="text" name="model.license" value="${model.license }"  />
+											</td>
+				</tr>
+				<tr>
+					<td>资质</td>
+					<td>
+					<input class="form-control" type="text" name="model.aptitude" value="${model.aptitude }"  />
+											</td>
+				</tr>
+				<tr>
+					<td>服务商描述</td>
+					<td>
+					<input class="form-control" type="text" name="model.describe" value="${model.describe }"  />
+											</td>
+				</tr>
+				<tr>
+					<td>评估状态</td>
+					<td>
+					<input class="form-control" type="text" name="model.evaluate" value="${model.evaluate }"  />
+											</td>
+				</tr>
+				<tr>
+					<td>排序</td>
+					<td>
+					<input class="form-control" type="text" name="model.sort" value="${model.sort }"  />
+											</td>
+				</tr>
+				<tr>
+					<td>更新时间</td>
+					<td>
+					<input class="form-control" type="text" name="model.update_time" value="${model.update_time }"  />
+											</td>
+				</tr>
+				<tr>
+					<td>创建时间</td>
+					<td>
+					<input class="form-control" type="text" name="model.create_time" value="${model.create_time }"  />
+											</td>
+				</tr>
+				<tr>
+					<td>创建者</td>
+					<td>
+					<input class="form-control" type="text" name="model.create_id" value="${model.create_id }"  />
+											</td>
+				</tr>
+		<tr>
+			<td colspan="2" style="text-align: center;">
+			<input type="submit" value="保 存" class="btn btn-default">
+			<button class="btn btn-default" onclick="closeIframe();return false;">关 闭</button>
+			</td>
+		</tr>
+	</table>
+</form>
+<%}; %>
+
+<% layout("/pages/template/_layout.html",{head:headContent,body:bodyContent}){ %>
+<%} 
+%>

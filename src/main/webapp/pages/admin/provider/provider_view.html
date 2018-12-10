@@ -1,0 +1,99 @@
+<% 
+var headContent = {
+	include("/pages/template/head.html"){}
+};
+
+var bodyContent = {
+%>
+<form name="form1" action="" method="post" class="form-horizontal" role="form">
+	<!-- 数据列表 -->
+	<table class="table">
+		<%  // 列表头部 %>
+						<tr>
+				<td>联系人姓名</td>
+				<td>${model.name}</td>
+			</tr>
+						<tr>
+				<td>联系人电话</td>
+				<td>${model.telephone}</td>
+			</tr>
+						<tr>
+				<td>服务类型</td>
+				<td>${model.service}</td>
+			</tr>
+						<tr>
+				<td>子项</td>
+				<td>${model.sub}</td>
+			</tr>
+						<tr>
+				<td>公司名称</td>
+				<td>${model.company}</td>
+			</tr>
+						<tr>
+				<td>企业性质</td>
+				<td>${model.nature}</td>
+			</tr>
+						<tr>
+				<td>企业规模</td>
+				<td>${model.scope}</td>
+			</tr>
+						<tr>
+				<td>企业分类</td>
+				<td>${model.classtype}</td>
+			</tr>
+						<tr>
+				<td>企业标签</td>
+				<td>${model.label}</td>
+			</tr>
+						<tr>
+				<td>注册资金</td>
+				<td>${model.capital}</td>
+			</tr>
+						<tr>
+				<td>企业logo</td>
+				<td>${model.logo}</td>
+			</tr>
+						<tr>
+				<td>营业执照</td>
+				<td>${model.license}</td>
+			</tr>
+						<tr>
+				<td>资质</td>
+				<td>${model.aptitude}</td>
+			</tr>
+						<tr>
+				<td>服务商描述</td>
+				<td>${model.describe}</td>
+			</tr>
+						<tr>
+				<td>评估状态</td>
+				<td>${model.evaluate}</td>
+			</tr>
+						<tr>
+				<td>排序</td>
+				<td>${model.sort}</td>
+			</tr>
+						<tr>
+				<td>更新时间</td>
+				<td>${model.update_time}</td>
+			</tr>
+						<tr>
+				<td>创建时间</td>
+				<td>${model.create_time}</td>
+			</tr>
+						<tr>
+				<td>创建者</td>
+				<td>${model.create_id}</td>
+			</tr>
+		
+		<tr>
+			<td colspan="2" align="center">
+			<button class="btn btn-default" onclick="closeIframe();return false;">关 闭</button>
+			</td>
+		</tr>
+	</table>
+</form>
+<%}; %>
+
+<% layout("/pages/template/_layout.html",{head:headContent,body:bodyContent}){ %>
+<%} %>
