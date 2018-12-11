@@ -1,0 +1,93 @@
+<% 
+var headContent = {
+	include("/pages/template/head.html"){}
+%>
+<script type="text/javascript">
+	var oper ;
+	jQuery(function($) {
+		oper = new flyfox("points", "积分配置表");
+	});
+</script>
+
+<%
+};
+var bodyContent = {
+%>
+<form name="form1" action="" method="post" class="form-horizontal"
+		role="form" onsubmit="oper.save(${model.id});">
+	<input type="hidden" name="model.id" value="${model.id}" />
+	<table class="table">
+		<%  // 列表头部%>
+				<tr>
+					<td>用户行为</td>
+					<td>
+					<input class="form-control" type="text" name="model.useraction" value="${model.useraction }"  />
+											</td>
+				</tr>
+				<tr>
+					<td>次数限制</td>
+					<td>
+					<input class="form-control" type="text" name="model.timelimit" value="${model.timelimit }"  />
+											</td>
+				</tr>
+				<tr>
+					<td>积分数</td>
+					<td>
+					<input class="form-control" type="text" name="model.pointsnum" value="${model.pointsnum }"  />
+											</td>
+				</tr>
+				<tr>
+					<td>事物标记</td>
+					<td>
+					<input class="form-control" type="text" name="model.signlogin" value="${model.signlogin }"  />
+											</td>
+				</tr>
+				<tr>
+					<td>是否开启</td>
+					<td>
+					<input class="form-control" type="text" name="model.openflag" value="${model.openflag }"  />
+											</td>
+				</tr>
+				<tr>
+					<td>排序号</td>
+					<td>
+					<input class="form-control" type="text" name="model.sort" value="${model.sort }"  />
+											</td>
+				</tr>
+				<tr>
+					<td>更新时间</td>
+					<td>
+					<input class="form-control" type="text" name="model.update_time" value="${model.update_time }"  />
+											</td>
+				</tr>
+				<tr>
+					<td>更新人</td>
+					<td>
+					<input class="form-control" type="text" name="model.update_id" value="${model.update_id }"  />
+											</td>
+				</tr>
+				<tr>
+					<td>创建时间</td>
+					<td>
+					<input class="form-control" type="text" name="model.create_time" value="${model.create_time }"  />
+											</td>
+				</tr>
+				<tr>
+					<td>创建者</td>
+					<td>
+					<input class="form-control" type="text" name="model.create_id" value="${model.create_id }"  />
+											</td>
+				</tr>
+		<tr>
+			<td colspan="2" style="text-align: center;">
+			<input type="submit" value="保 存" class="btn btn-default">
+			<button class="btn btn-default" onclick="closeIframe();return false;">关 闭</button>
+			</td>
+		</tr>
+	</table>
+</form>
+<%}; %>
+
+<% layout("/pages/template/_layout.html",{head:headContent,body:bodyContent}){ %>
+<%} 
+%>

@@ -1,0 +1,51 @@
+<% 
+var headContent = {
+	include("/pages/template/head.html"){}
+};
+
+var bodyContent = {
+%>
+<form name="form1" action="" method="post" class="form-horizontal" role="form">
+	<!-- 数据列表 -->
+	<table class="table">
+		<%  // 列表头部 %>
+						<tr>
+				<td>商品ID</td>
+				<td>${model.goodsid}</td>
+			</tr>
+						<tr>
+				<td>客户ID</td>
+				<td>${model.customerid}</td>
+			</tr>
+						<tr>
+				<td>是否兑换</td>
+				<td>${model.changeflag}</td>
+			</tr>
+						<tr>
+				<td>更新时间</td>
+				<td>${model.update_time}</td>
+			</tr>
+						<tr>
+				<td>更新人</td>
+				<td>${model.update_id}</td>
+			</tr>
+						<tr>
+				<td>创建时间</td>
+				<td>${model.create_time}</td>
+			</tr>
+						<tr>
+				<td>创建者</td>
+				<td>${model.create_id}</td>
+			</tr>
+		
+		<tr>
+			<td colspan="2" align="center">
+			<button class="btn btn-default" onclick="closeIframe();return false;">关 闭</button>
+			</td>
+		</tr>
+	</table>
+</form>
+<%}; %>
+
+<% layout("/pages/template/_layout.html",{head:headContent,body:bodyContent}){ %>
+<%} %>

@@ -1,0 +1,128 @@
+<% 
+DIRECTIVE SAFE_OUTPUT_OPEN;
+var headContent = {
+	include("/pages/template/head.html"){}
+%>
+<% include("/pages/includes/my97.html"){} %>
+<script type="text/javascript">
+	var oper = {
+	save:function(id){
+		if(!validForm()) {
+			return false;
+		}
+		
+		var goodstype = $("#goodstype").val();
+		if(goodstype=="010"){
+			var cardid = $("#cardid").val();
+			//虚拟商品 卡券ID必输
+			if(typeof(cardid)=="undefined"||cardid==""){
+				Alert("虚拟商品需要填写卡券ID",function(){
+				});
+				return false;
+			}
+		}
+		id = id || '0';
+		var url = 'admin/goods/save/'+id;
+		form1.action = url;
+		form1.submit();
+		return true;
+	}	
+};
+
+</script>
+
+<%
+};
+var bodyContent = {
+%>
+<form name="form1" action="" method="post" class="form-horizontal" enctype="multipart/form-data" role="form">
+	<input type="hidden" name="model.id" value="${model.id}" />
+	<table class="table">
+		<%  // 列表头部%>
+				<tr>
+					<td>商品名称</td>
+					<td>
+					<input class="form-control" type="text" name="model.name" value="${model.name }" valid="vtext" validname="商品名称"/>
+											</td>
+				</tr>
+				<tr>
+					<td>商品类型</td>
+					<td>
+						<select name="model.goodstype" class="form-control" valid="vselect" validname="商品类型" id="goodstype">
+							<option value="-1">--请选择--</option>
+							${selectGoods }
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>卡券ID</td>
+					<td>
+					<input class="form-control" type="text" name="model.cardid" value="${model.cardid }"  id="cardid"/>
+											</td>
+				</tr>
+				<tr>
+					<td>商品图片
+						<% if(!strutil.isEmpty(model.picture)){ %>
+							<a href="${model.picture}" target="_blank" style="text-decoration:none;">
+								<img alt="图片" title="点击浏览" src="${model.picture}" width="40" height="40">
+							</a>
+						<% } %></td>
+					<td>
+						<input type="file" accept="image/*" class="form-control" name="model.picture" />
+					</td>
+				</tr>
+				<tr>
+					<td>库存数量</td>
+					<td>
+					<input class="form-control" type="number" name="model.stocknum" value="${model.stocknum }" min="0" />
+											</td>
+				</tr>
+				<tr>
+					<td>库存时间</td>
+					<td>
+					<input class="form-control" type="text" name="model.stocktime" value="${model.stocktime }"  onfocus="WdatePicker({dateFmt:'yyyy/MM/dd'})"/>
+											</td>
+				</tr>
+				<tr>
+					<td>积分数</td>
+					<td>
+					<input class="form-control" type="number" name="model.pointsnum" valid="vtext" validname="积分数" value="${model.pointsnum }" min="0" />
+											</td>
+				</tr>
+				<tr>
+					<td>是否上架</td>
+					<td>
+						<select name="model.grounding" class="form-control" valid="vselect" validname="是否上架">
+						<option value="-1">--请选择--</option>
+						${selectGrounding }
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>介绍</td>
+					<td colspan="3">
+						<textarea class="form-control" rows="2" cols="30" name="model.describe">${model.describe}</textarea>
+					</td>
+				</tr>
+				<tr>
+					<td>排序号</td>
+					<td>
+					<input class="form-control" type="number" name="model.sort" value="${model.sort }" min="0" />
+											</td>
+				</tr>
+	</table>
+	
+	<div style="height: 50px;clear: both;">&nbsp;</div>
+	<nav class="navbar navbar-default navbar-fixed-bottom">
+	  <div class="container" style="padding: 5px 0px 5px 0px;text-align: center;">
+		<button class="btn btn-primary" onclick="oper.save(${model.id!'0'});return false;">保 存</button>
+		<button class="btn btn-default" onclick="closeIframe();return false;">关 闭</button>
+	  </div>
+	</nav>
+</form>
+<%}; %>
+
+<% layout("/pages/template/_layout.html",{head:headContent,body:bodyContent}){ %>
+DIRECTIVE SAFE_OUTPUT_CLOSE;
+<%} 
+%>

@@ -1,0 +1,77 @@
+<% 
+DIRECTIVE SAFE_OUTPUT_OPEN;
+var headContent = {
+	include("/pages/template/head.html"){}
+%>
+<script type="text/javascript">
+	var oper ;
+	jQuery(function($) {
+		oper = new flyfox("goodschange", "商品兑换记录");
+	});
+</script>
+
+<%
+};
+var bodyContent = {
+%>
+<form name="form1" action="" method="post" class="form-horizontal"
+		role="form" onsubmit="oper.save(${model.id});">
+	<input type="hidden" name="model.id" value="${model.id}" />
+	<table class="table">
+		<%  // 列表头部%>
+				<tr>
+					<td>商品ID</td>
+					<td>
+					<input class="form-control" type="text" name="model.goodsid" value="${model.goodsid }"  />
+											</td>
+				</tr>
+				<tr>
+					<td>客户ID</td>
+					<td>
+					<input class="form-control" type="text" name="model.customerid" value="${model.customerid }"  />
+											</td>
+				</tr>
+				<tr>
+					<td>是否兑换</td>
+					<td>
+					<input class="form-control" type="text" name="model.changeflag" value="${model.changeflag }"  />
+											</td>
+				</tr>
+				<tr>
+					<td>更新时间</td>
+					<td>
+					<input class="form-control" type="text" name="model.update_time" value="${model.update_time }"  />
+											</td>
+				</tr>
+				<tr>
+					<td>更新人</td>
+					<td>
+					<input class="form-control" type="text" name="model.update_id" value="${model.update_id }"  />
+											</td>
+				</tr>
+				<tr>
+					<td>创建时间</td>
+					<td>
+					<input class="form-control" type="text" name="model.create_time" value="${model.create_time }"  />
+											</td>
+				</tr>
+				<tr>
+					<td>创建者</td>
+					<td>
+					<input class="form-control" type="text" name="model.create_id" value="${model.create_id }"  />
+											</td>
+				</tr>
+		<tr>
+			<td colspan="2" style="text-align: center;">
+			<input type="submit" value="保 存" class="btn btn-default">
+			<button class="btn btn-default" onclick="closeIframe();return false;">关 闭</button>
+			</td>
+		</tr>
+	</table>
+</form>
+<%}; %>
+
+<% layout("/pages/template/_layout.html",{head:headContent,body:bodyContent}){ %>
+<%} 
+DIRECTIVE SAFE_OUTPUT_CLOSE;
+%>

@@ -1,0 +1,83 @@
+<% 
+var headContent = {
+	include("/pages/template/head.html"){}
+};
+
+var bodyContent = {
+%>
+<form name="form1" action="" method="post" class="form-horizontal" role="form">
+	<!-- 数据列表 -->
+	<table class="table">
+		<%  // 列表头部 %>
+						<tr>
+				<td>商品名称</td>
+				<td>${model.name}</td>
+			</tr>
+						<tr>
+				<td>商品类型</td>
+				<td>${model.goodstype}</td>
+			</tr>
+						<tr>
+				<td>卡券ID</td>
+				<td>${model.cardid}</td>
+			</tr>
+						<tr>
+				<td>商品图片</td>
+				<td>${model.picture}</td>
+			</tr>
+						<tr>
+				<td>库存数量</td>
+				<td>${model.stocknum}</td>
+			</tr>
+						<tr>
+				<td>库存时间</td>
+				<td>${model.stocktime}</td>
+			</tr>
+						<tr>
+				<td>积分数</td>
+				<td>${model.pointsnum}</td>
+			</tr>
+						<tr>
+				<td>兑换量</td>
+				<td>${model.changenum}</td>
+			</tr>
+						<tr>
+				<td>是否上架</td>
+				<td>${model.grounding}</td>
+			</tr>
+						<tr>
+				<td>介绍</td>
+				<td>${model.describe}</td>
+			</tr>
+						<tr>
+				<td>排序号</td>
+				<td>${model.sort}</td>
+			</tr>
+						<tr>
+				<td>更新时间</td>
+				<td>${model.update_time}</td>
+			</tr>
+						<tr>
+				<td>更新人</td>
+				<td>${model.update_id}</td>
+			</tr>
+						<tr>
+				<td>创建时间</td>
+				<td>${model.create_time}</td>
+			</tr>
+						<tr>
+				<td>创建者</td>
+				<td>${model.create_id}</td>
+			</tr>
+		
+		<tr>
+			<td colspan="2" align="center">
+			<button class="btn btn-default" onclick="closeIframe();return false;">关 闭</button>
+			</td>
+		</tr>
+	</table>
+</form>
+<%}; %>
+
+<% layout("/pages/template/_layout.html",{head:headContent,body:bodyContent}){ %>
+<%} %>
