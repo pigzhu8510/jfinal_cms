@@ -71,40 +71,7 @@ public class ProviderController extends BaseProjectController {
 		render(path + "list.html");
 	}
 	
-	public String selectDictDetail(String dicttype,String selected) {
-		List<SysDictDetail> list = new ArrayList<SysDictDetail>();
-		list = SysDictDetail.dao.find("select * from sys_dict_detail where dict_type='"+dicttype+"' order by detail_sort");
-		StringBuffer sb = new StringBuffer();
-		for (SysDictDetail dictdetail : list) {
-			sb.append("<option value=\"");
-			sb.append(dictdetail.getStr("detail_code"));
-			sb.append("\" ");
-			sb.append(dictdetail.getStr("detail_code").equals(selected) ? "selected" : "");
-			sb.append(">");
-			sb.append(dictdetail.getStr("detail_name"));
-			sb.append("</option>");
-		}
-		return sb.toString();
-	}
 	
-	public String selectDictDetail(String dicttype,String code,String selected) {
-		List<SysDictDetail> list = new ArrayList<SysDictDetail>();
-		if(code == null ||"".equals(code)){
-			code = "******";
-		}
-		list = SysDictDetail.dao.find("select * from sys_dict_detail where dict_type='"+dicttype+"' and detail_code like concat('"+code+"','%') order by detail_sort");
-		StringBuffer sb = new StringBuffer();
-		for (SysDictDetail dictdetail : list) {
-			sb.append("<option value=\"");
-			sb.append(dictdetail.getStr("detail_code"));
-			sb.append("\" ");
-			sb.append(dictdetail.getStr("detail_code").equals(selected) ? "selected" : "");
-			sb.append(">");
-			sb.append(dictdetail.getStr("detail_name"));
-			sb.append("</option>");
-		}
-		return sb.toString();
-	}
 
 	public void add() {
 		render(path + "add.html");

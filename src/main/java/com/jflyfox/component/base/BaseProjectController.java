@@ -28,6 +28,7 @@ import com.jflyfox.modules.admin.site.SessionSite;
 import com.jflyfox.modules.admin.site.SiteConstant;
 import com.jflyfox.modules.admin.site.SiteService;
 import com.jflyfox.modules.admin.site.TbSite;
+import com.jflyfox.system.dict.SysDictDetail;
 import com.jflyfox.system.file.model.FileUploadBean;
 import com.jflyfox.system.file.service.FileUploadService;
 import com.jflyfox.system.file.util.FileUploadUtils;
@@ -41,6 +42,7 @@ import com.jflyfox.util.cache.Cache;
 import com.jflyfox.util.cache.CacheManager;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -293,5 +295,40 @@ public abstract class BaseProjectController extends BaseController {
 			fileUrl = projectStorePath + File.separator + uploadBean.getName();
 		}
 		return FileUploadUtils.rebuild(fileUrl);
+	}
+	
+	public String selectDictDetail(String dicttype,String selected) {
+		List<SysDictDetail> list = new ArrayList<SysDictDetail>();
+		list = SysDictDetail.dao.find("select * from sys_dict_detail where dict_type='"+dicttype+"' order by detail_sort");
+		StringBuffer sb = new StringBuffer();
+		for (SysDictDetail dictdetail : list) {
+			sb.append("<option value=\"");
+			sb.append(dictdetail.getStr("detail_code"));
+			sb.append("\" ");
+			sb.append(dictdetail.getStr("detail_code").equals(selected) ? "selected" : "");
+			sb.append(">");
+			sb.append(dictdetail.getStr("detail_name"));
+			sb.append("</option>");
+		}
+		return sb.toString();
+	}
+	
+	public String selectDictDetail(String dicttype,String code,String selected) {
+		List<SysDictDetail> list = new ArrayList<SysDictDetail>();
+		if(code == null ||"".equals(code)){
+			code = "******";
+		}
+		list = SysDictDetail.dao.find("select * from sys_dict_detail where dict_type='"+dicttype+"' and detail_code like concat('"+code+"','%') order by detail_sort");
+		StringBuffer sb = new StringBuffer();
+		for (SysDictDetail dictdetail : list) {
+			sb.append("<option value=\"");
+			sb.append(dictdetail.getStr("detail_code"));
+			sb.append("\" ");
+			sb.append(dictdetail.getStr("detail_code").equals(selected) ? "selected" : "");
+			sb.append(">");
+			sb.append(dictdetail.getStr("detail_name"));
+			sb.append("</option>");
+		}
+		return sb.toString();
 	}
 }
