@@ -9,7 +9,7 @@ jQuery(function($) {
 	// 页面方法
 	oper = {
 		width : 450,
-		height : 700,
+		height : 650,
 		form : document.form1,
 		list : function() {
 			var url = 'admin/provider/list';
@@ -26,8 +26,16 @@ jQuery(function($) {
 			var title = '添加服务商';
 			Iframe(url, this.width, this.height, title);
 		},
-		edit : function(id) {
-			var url = 'admin/provider/edit/'+id;
+		edit : function(id,providertype) {
+			var url = '';
+			if(providertype=="1"){
+				//个人
+				url = 'admin/provider/edit1/'+id;
+			}else{
+				//机构
+				url = 'admin/provider/edit/'+id;
+			}
+			
 			var title = '审核服务商';
 			Iframe(url, this.width, this.height, title);
 		},
@@ -129,7 +137,7 @@ var bodyContent = {
 					<td>${item.EvaluateType}</td> 
 					<td>${item.create_time}</td> 
 				<td>
-				<a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="oper.edit(${item.id});">审核</a> 
+				<a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="oper.edit(${item.id},${item.providertype});">审核</a> 
 				<a href="javascript:void(0);" class="btn btn-sm btn-danger" onclick="oper.del(${item.id});">删除</a>
 				</td>
 				</tr>

@@ -1,0 +1,207 @@
+<% 
+DIRECTIVE SAFE_OUTPUT_OPEN;
+var headContent = {
+	include("/pages/template/head.html"){}
+%>
+<script type="text/javascript">
+	var oper = {
+	save:function(id){
+		if(!validForm()) {
+			return false;
+		}
+		id = id || '0';
+		var url = 'admin/provider/save/'+id;
+		form1.action = url;
+		form1.submit();
+		return true;
+	}	
+};
+
+//实现二级联动
+function selectApar() {
+	var service = $("#selectService").val();
+	$("#selectSub").find("option:not(:first)").remove();
+	$.ajax({
+		url : "admin/provider/select",
+		async : false,
+		dataType: 'json',
+		data : {
+			"dicttype":"SubType","service" : service,"selected":"-1"
+		},
+		success :function(data) {
+			$("#selectSub").append(data.option);
+		},
+		error:function(){
+			alert("ajax交互失败");
+		}
+	})
+}
+</script>
+
+<%
+};
+var bodyContent = {
+%>
+<form name="form1" action="" method="post" class="form-horizontal" enctype="multipart/form-data" role="form">
+	<input type="hidden" name="model.id" value="${model.id}" />
+	<table class="table">
+		<%  // 列表头部%>
+				<tr>
+					<td>联系人姓名</td>
+					<td>
+					<input class="form-control" type="text" name="model.name" value="${model.name }"/>
+											</td>
+				</tr>
+				<tr>
+					<td>联系人电话</td>
+					<td>
+					<input class="form-control" type="text" name="model.telephone"  valid="vmobile" value="${model.telephone }"/>
+											</td>
+				</tr>
+				<tr>
+					<td>服务类型</td>
+					<td>
+						<select name="model.service" class="form-control" onchange="selectApar()" id="selectService" valid="vselect" validname="服务类型">
+							<option value="-1">--请选择--</option>
+							${selectService }
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>子项</td>
+					<td>
+						<select name="model.sub" class="form-control" id="selectSub" valid="vselect" validname="服务子项">
+							<option value="-1">--请选择--</option>
+							${selectSub }
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>服务商类型</td>
+					<td>
+						<select name="model.providertype" class="form-control" valid="vselect" validname="服务商类型">
+						<option value="-1">--请选择--</option>
+						${selectProvider }
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>开户姓名</td>
+					<td>
+					<input class="form-control" type="text" name="model.company" value="${model.company }" />
+											</td>
+				</tr>
+				<tr>
+					<td>银行卡号</td>
+					<td>
+					<input class="form-control" type="text" name="model.cardno" value="${model.cardno }" />
+											</td>
+				</tr>
+				<tr>
+					<td>开户银行</td>
+					<td>
+						<select name="model.bankid" class="form-control" validname="开户银行">
+						<option value="-1">--请选择--</option>
+						${selectBankId }
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>联系邮箱</td>
+					<td>
+					<input class="form-control" type="text" name="model.mail" valid="vemail" value="${model.mail }" />
+											</td>
+				</tr>
+				<tr>
+					<td>从业年限</td>
+					<td>
+					<input class="form-control" type="number" name="model.jobyear" value="${model.jobyear }" min="0"/>
+											</td>
+				</tr>
+				<tr>
+					<td>从业证书
+						<% if(!strutil.isEmpty(model.logo)){ %>
+							<a href="${model.logo}" target="_blank" style="text-decoration:none;">
+								<img alt="图片" title="点击浏览" src="${model.logo}" width="40" height="40">
+							</a>
+						<% } %></td>
+					<td>
+						<input type="file" accept="image/*" class="form-control" name="model.logo" />
+					</td>
+				</tr>
+				<tr>
+					<td>身份证号</td>
+					<td>
+					<input class="form-control" type="text" name="model.certid" value="${model.certid }" />
+											</td>
+				</tr>
+				<tr>
+					<td>身份证正面
+						<% if(!strutil.isEmpty(model.certface)){ %>
+							<a href="${model.certface}" target="_blank" style="text-decoration:none;">
+								<img alt="身份证正面" title="点击浏览" src="${model.certface}" width="40" height="40">
+							</a>
+						<% } %></td>
+					<td>
+						<input type="file" accept="image/*" class="form-control" name="model.certface" />
+					</td>
+				</tr>
+				<tr>
+					<td>身份证反面
+						<% if(!strutil.isEmpty(model.certside)){ %>
+							<a href="${model.certside}" target="_blank" style="text-decoration:none;">
+								<img alt="身份证反面" title="点击浏览" src="${model.certside}" width="40" height="40">
+							</a>
+						<% } %></td>
+					<td>
+						<input type="file" accept="image/*" class="form-control" name="model.certside" />
+					</td>
+				</tr>
+				<tr>
+					<td>资质
+						<% if(!strutil.isEmpty(model.aptitude)){ %>
+							<a href="${model.aptitude}" target="_blank" style="text-decoration:none;">
+								<img alt="资质" title="点击浏览" src="${model.aptitude}" width="40" height="40">
+							</a>
+						<% } %></td>
+					<td>
+						<input type="file" accept="image/*" class="form-control" name="model.aptitude" />
+					</td>
+				</tr>
+				<tr>
+					<td>服务商描述</td>
+					<td colspan="3">
+						<textarea class="form-control" rows="2" cols="30" name="model.describe">${model.describe}</textarea>
+					</td>
+				</tr>
+				<tr>
+					<td>评估状态</td>
+					<td>
+						<select name="model.evaluate" class="form-control" valid="vselect" validname="评估状态">
+						<option value="-1">--请选择--</option>
+						${selectEvaluate }
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>申请时间</td>
+					<td>
+					<input class="form-control" type="text" name="model.create_time" value="${model.create_time }"  readonly/>
+											</td>
+				</tr>
+	</table>
+	
+	<div style="height: 50px;clear: both;">&nbsp;</div>
+	<nav class="navbar navbar-default navbar-fixed-bottom">
+	  <div class="container" style="padding: 5px 0px 5px 0px;text-align: center;">
+		<button class="btn btn-primary" onclick="oper.save(${model.id!'0'});return false;">保 存</button>
+		<button class="btn btn-default" onclick="closeIframe();return false;">关 闭</button>
+	  </div>
+	</nav>
+</form>
+<%}; %>
+
+<% layout("/pages/template/_layout.html",{head:headContent,body:bodyContent}){ %>
+DIRECTIVE SAFE_OUTPUT_CLOSE;
+<%} 
+%>

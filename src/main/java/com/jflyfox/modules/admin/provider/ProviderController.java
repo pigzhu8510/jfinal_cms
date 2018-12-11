@@ -129,7 +129,7 @@ public class ProviderController extends BaseProjectController {
 		setAttr("selectService", selectDictDetail("ServiceType",model.getStr("service")));
 		setAttr("selectEvaluate", selectDictDetail("EvaluateType",model.getStr("evaluate")));
 		setAttr("selectSub", selectDictDetail("SubType",model.getStr("service"),model.getStr("sub")));
-		setAttr("selectProvider", selectDictDetail("Providertype",model.getStr("providertype")));
+		setAttr("selectProvider", selectDictDetail("ProviderType",model.getStr("providertype")));
 		setAttr("selectNature", selectDictDetail("NatureType",model.getStr("nature")));
 		setAttr("selectScope", selectDictDetail("ScopeType",model.getStr("scope")));
 		setAttr("selectClass", selectDictDetail("ClassType",model.getStr("classtype")));
@@ -137,6 +137,18 @@ public class ProviderController extends BaseProjectController {
 		setAttr("selectCapital", selectDictDetail("CapitalType",model.getStr("capital")));
 		
 		render(path + "edit.html");
+	}
+	
+	public void edit1() {
+		SmProvider model = SmProvider.dao.findById(getParaToInt());
+		setAttr("model", model);
+		setAttr("selectService", selectDictDetail("ServiceType",model.getStr("service")));
+		setAttr("selectEvaluate", selectDictDetail("EvaluateType",model.getStr("evaluate")));
+		setAttr("selectSub", selectDictDetail("SubType",model.getStr("service"),model.getStr("sub")));
+		setAttr("selectProvider", selectDictDetail("ProviderType",model.getStr("providertype")));
+		setAttr("selectBankId", selectDictDetail("BankType",model.getStr("bankid")));
+		
+		render(path + "edit1.html");
 	}
 
 	public void save() {
