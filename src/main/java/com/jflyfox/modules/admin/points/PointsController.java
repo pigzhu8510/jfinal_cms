@@ -1,6 +1,12 @@
 package com.jflyfox.modules.admin.points;
 
-import com.jflyfox.jfinal.base.BaseController;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import com.alibaba.fastjson.JSONArray;
+import com.jflyfox.component.base.BaseProjectController;
+import com.jflyfox.jfinal.component.annotation.ControllerBind;
 import com.jflyfox.jfinal.component.db.SQLUtils;
 import com.jfinal.plugin.activerecord.Page;
 
@@ -9,9 +15,10 @@ import com.jfinal.plugin.activerecord.Page;
  * 
  * @author flyfox 2014-4-24
  */
-public class PointsController extends BaseController {
+@ControllerBind(controllerKey = "/admin/points")
+public class PointsController extends BaseProjectController {
 
-	private static final String path = "/pages/points/points_";
+	private static final String path = "/pages/admin/points/points_";
 
 	public void list() {
 		SysPoints model = getModelByAttr(SysPoints.class);
@@ -31,38 +38,27 @@ public class PointsController extends BaseController {
 		render(path + "list.html");
 	}
 
-	public void add() {
-		render(path + "add.html");
-	}
-
-	public void view() {
-		SysPoints model = SysPoints.dao.findById(getParaToInt());
-		setAttr("model", model);
-		render(path + "view.html");
-	}
-
-	public void delete() {
-		SysPoints.dao.deleteById(getParaToInt());
-		list();
-	}
-
-	public void edit() {
-		SysPoints model = SysPoints.dao.findById(getParaToInt());
-		setAttr("model", model);
-		render(path + "edit.html");
-	}
-
 	public void save() {
-		Integer pid = getParaToInt();
-		SysPoints model = getModel(SysPoints.class);
-		if (pid != null && pid > 0) { // 更新
-			model.update();
-		} else { // 新增
-			model.remove("id");
-			model.put("create_id", getSessionUser().getUserid());
-			model.put("create_time", getNow());
-			model.save();
-		}
-		renderMessage("保存成功");
+		String data = this.getPara("data");
+		
+		JSONArray jsonArray = JSONArray.parseArray(data);
+		 
+        List<Map<String,Object>> mapListJson = (List)jsonArray;
+        for (int i = 0; i < mapListJson.size(); i++) {
+            Map<String,Object> obj=mapListJson.get(i);
+            
+            SysPoints model = getModelByAttr(SysPoints.class);
+            
+            for(Entry<String,Object> entry : obj.entrySet()){
+                String strkey1 = entry.getKey();
+                Object strval1 = entry.getValue();
+                model.set(strkey1, strval1);
+            }
+            
+            model.update();
+        }
+		
+		setAttr("option", data);
+		renderJson();
 	}
 }

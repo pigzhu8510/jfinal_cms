@@ -3,8 +3,6 @@ package com.jflyfox.modules.admin.goodschange;
 import com.jflyfox.component.base.BaseProjectController;
 import com.jflyfox.jfinal.component.annotation.ControllerBind;
 import com.jflyfox.jfinal.component.db.SQLUtils;
-import com.jflyfox.modules.admin.contact.TbContact;
-import com.jflyfox.modules.admin.goods.SmGoods;
 import com.jflyfox.util.StrUtils;
 import com.jfinal.plugin.activerecord.Page;
 
