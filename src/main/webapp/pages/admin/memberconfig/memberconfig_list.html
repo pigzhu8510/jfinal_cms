@@ -1,0 +1,265 @@
+<% 
+	var headContent = {
+	include("/pages/template/head.html"){}
+%>
+
+<script type="text/javascript">
+jQuery(function($) {
+	$(".checkbox").bootstrapSwitch({  
+        onText : "是",      // 设置ON文本  
+        offText : "否",    // 设置OFF文本  
+        onColor : "success",// 设置ON文本颜色     (info/success/warning/danger/primary)  
+        offColor : "info",  // 设置OFF文本颜色        (info/success/warning/danger/primary)  
+        size : "small",    // 设置控件大小,从小到大  (mini/small/normal/large)  
+        // 当开关状态改变时触发  
+        onSwitchChange : function(event, state) {  
+            if (state == true) {  
+            } else {  
+            }  
+        }  
+    });  
+
+	//显示Menu索引
+	showMenu('page_memberconfig');
+});
+
+//基础函数开始
+/**
+ * 基础封装函数
+ */
+var _fnObjectGetPropertyChainValue = function(obj, propertyChain) {
+  /* 获取属性链的值 */
+  if (!obj) return;
+  if (!propertyChain) return obj;
+  var property,
+    chains = propertyChain.split('.'),
+    i = 0,
+    len = chains.length;
+  for (;
+    (property = chains[i]) && i < len - 1; i++) {
+    if (!obj[property]) return;
+    obj = obj[property];
+  }
+  return obj[property];
+},
+_fnObjectSetPropertyChainValue = function(obj, propertyChain, value, allowMulti) {
+  /* 设置属性链的值 */
+  if (!obj || !propertyChain) return;
+  var property,
+    chainObj = obj,
+    chains = propertyChain.split('.'),
+    i = 0,
+    len = chains.length;
+  for (;
+    (property = chains[i]) && i < len - 1; i++) {
+    if (!chainObj[property]) {
+      chainObj[property] = {};
+    }
+    chainObj = chainObj[property];
+  }
+  // 改进版：checkbox的多选可以组合为数组
+  if (!allowMulti || chainObj[property] === undefined) {
+    chainObj[property] = value;
+  } else {
+    var pv = chainObj[property];
+    if ($.isArray(pv)) {
+      pv.push(value);
+    } else {
+      chainObj[property] = [pv, value];
+    }
+  }
+  return obj;
+};
+/**
+ * 格式化字符串 第一个参数为格式化模板 format('this is a {0} template!', 'format');
+ * format('this is a {0.message} template!', { message: 'format'}); 等同于
+ * format('this is a {message} template!', { message: 'format' });
+ */
+$.format = function() {
+var template = arguments[0],
+  templateArgs = arguments,
+  stringify = function(obj) {
+    if (obj == null) {
+      return '';
+    } else if (typeof obj === 'function') {
+      return obj();
+    } else if (typeof obj !== 'string') {
+      return JSON.stringify ? JSON.stringify(obj) : obj;
+    }
+    return obj;
+  };
+return template.replace(/\{\w+(\.\w+)*\}/g, function(match) {
+  var propChains = match.slice(1, -1).split('.');
+  var index = isNaN(propChains[0]) ? 0 : +propChains.shift();
+  var arg, prop;
+  if (index + 1 < templateArgs.length) {
+    arg = templateArgs[index + 1];
+    while (prop = propChains.shift()) {
+      arg = arg[prop] == null ? '' : arg[prop];
+    }
+    return stringify(arg);
+  }
+  return match;
+});
+};
+/**
+ * jQuery form 扩展获取数据
+ */
+$.fn.formGet = function(opts) {
+  opts = $.extend({}, opts);
+  var data = {},
+    els = opts.formGroup ? this.find('[form-group="' + opts.formGroup + '"]') : this.find('[name]');
+  if (!els || !els.length) {
+    return data;
+  }
+  var fnSetValue = (function(emptyToNull) {
+    return emptyToNull ? function(obj, propertyChain, value, allowMulti) {
+      value !== '' && _fnObjectSetPropertyChainValue(obj, propertyChain, value, allowMulti)
+    } : _fnObjectSetPropertyChainValue
+  })(opts.emptyToNull);
+  els.each(function() {
+    var $this = $(this),
+      type = $this.attr('type'),
+      name = $this.attr('name'), // 可能为属性链
+      tag = this.tagName.toLowerCase();
+    if (tag == 'input') {
+      if (type == 'checkbox') {
+        var v = $(this).val();
+        if (v == 'on' || !v) {
+          fnSetValue(data, name, $(this).prop('checked'));
+        } else {
+          $(this).prop('checked') && fnSetValue(data, name, v, true);
+        }
+      } else if (type == 'radio') {
+        this.checked && fnSetValue(data, name, $this.val());
+      } else {
+        fnSetValue(data, name, $.trim($this.val()));
+      }
+    } else if ('|select|textarea|'.indexOf('|' + tag + '|') > -1) {
+      fnSetValue(data, name, $this.val());
+    } else {
+      fnSetValue(data, name, $.trim($this.text()));
+    }
+  });
+  return data;
+};
+/**
+ * jQuery form 扩展绑定数据
+ * 
+ */
+$.fn.formSet = function(data, formGroup) {
+var els = formGroup ? this.find('[form-group="' + formGroup + '"]') : this.find('[name]');
+if (!els || !els.length) {
+  return this;
+}
+els.each(function() {
+  var $this = $(this),
+    type = $this.attr('type'),
+    name = $this.attr('name'),
+    tag = this.tagName.toLowerCase();
+  var value = _fnObjectGetPropertyChainValue(data, name);
+  if (tag == 'input') {
+    if (type == 'checkbox') {
+      var v = $(this).val();
+      if (v == 'on' || !v) {
+        this.checked = value ? 'checked' : '';
+      } else {
+        this.checked = $.isArray(value) && value.indexOf(v) > -1 ? 'checked' : ''
+      }
+    } else if (type == 'radio') {
+      this.checked = $this.val() == String(value) ? 'checked' : '';
+    } else {
+      $this.val(value);
+    }
+  } else if ('|select|textarea|'.indexOf('|' + tag + '|') > -1) {
+    $this.val(value);
+  } else {
+    $this.html(value);
+  }
+});
+return this;
+};
+//基础函数结束
+//业务代码开始
+function _getContacts() {
+var contacts = [];
+var $contactsBody = $('#contactBody');
+$contactsBody.find('tr').each(function (index, ele) {
+var row = $(ele).formGet();
+contacts.push({"detail_id":row.detail_id,"pointsmin":row.pointsmin,"pointsmax":row.pointsmax,"detail_state":row.detail_state,"detail_sort":row.detail_sort });
+});
+return contacts;
+}
+
+var oper = {
+	save:function(){
+       var data = _getContacts();
+       
+       $.ajax({
+       url : "admin/memberconfig/save",
+		async : false,
+		dataType: 'json',
+		data : {
+			"data":JSON.stringify(data)
+		},
+		success :function(data) {
+			Alert("数据保存成功",function(){
+			});
+		},
+		error:function(){
+			alert("ajax交互失败");
+		}
+     });
+	}	
+};
+</script>
+
+<%
+};
+
+var bodyContent = {
+%>
+	<form name="form1" action="" method="post"  class="form-inline" role="form" id="channel">
+		<!-- 菜单 -->
+		<% include("/pages/template/menu.html"){} %>
+		<label for="otherContacts" class="col-md-2 control-label"></label>
+		<!-- 数据列表 -->
+		<table class="table table-striped table-bordered table-hover">
+			<thead>
+				<tr>
+				<th></th>
+					<%  // 列表头部 %>
+					<th>会员名称</th> 
+					<th>分值区间（积分数）</th> 
+					<th>排序</th> 
+					<th>是否开启</th> 
+				</tr>
+			</thead>
+			<tbody id="contactBody">
+			<% for(item in page.list){ %>
+				<tr>
+				<td><input type="hidden" name="detail_id" value="${item.detail_id}" /></td>
+					<%  // 列表内容 %>
+					<td><input type="text" class="form-control"  value="${item.detail_name}" name="detail_name" readonly></td>
+					<td><input type="number" class="form-control"  value="${item.pointsmin}" name="pointsmin" min="0">~<input type="number" class="form-control"  value="${item.pointsmax}" name="pointsmax" min="0"></td>
+					<td><input type="number" class="form-control"  value="${item.detail_sort}" name="detail_sort" min="0"></td>
+					<td>
+						<input type="checkbox" <% if(item.detail_state=="1"){ %>checked<% }else if(item.detail_state=="0"){ %>check<% }%> class="checkbox" name="detail_state"/>
+					</td>
+				</tr>
+			<% } %>
+			</tbody>
+		</table>
+		<table class="table table-striped table-bordered table-hover">
+		<tr>
+			<td style="text-align: center;">
+			<button class="btn btn-primary" onclick="oper.save();return false;">保 存</button>
+			</td>
+		</tr>
+		</table>
+	</form>
+<%}; %>
+
+
+<% layout("/pages/template/_layout.html",{head:headContent,body:bodyContent}){ %>
+<%} %>
